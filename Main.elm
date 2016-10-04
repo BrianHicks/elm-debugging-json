@@ -98,7 +98,29 @@ loadedUserView user =
             "loading #" ++ (toString i) |> Html.text
 
         Loaded user ->
-            user |> toString |> Html.text
+            Html.table
+                []
+                [ Html.thead []
+                    [ Html.tr
+                        []
+                        (List.map
+                            (\h -> Html.th [] [ Html.text h ])
+                            [ "ID", "Name", "Username", "Email" ]
+                        )
+                    ]
+                , Html.tbody []
+                    [ Html.tr
+                        []
+                        (List.map
+                            (\content -> Html.td [] [ Html.text content ])
+                            [ user.id |> toString
+                            , user.name
+                            , user.username
+                            , user.email
+                            ]
+                        )
+                    ]
+                ]
 
         Error err ->
             "error! " ++ (toString err) |> Html.text
@@ -108,7 +130,7 @@ view : Model -> Html Msg
 view model =
     Html.div
         []
-        [ Html.ul
+        [ Html.div
             []
             (List.map loadButton [ 1, 2, 3, 4, 5 ])
         , loadedUserView model.user
