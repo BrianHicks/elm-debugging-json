@@ -40,7 +40,7 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-    { user = NotLoaded } ! []
+    { user = NotLoaded } ! [ loadUser 1 ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
