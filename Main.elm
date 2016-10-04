@@ -106,8 +106,8 @@ fake =
 }"""
 
 
-loadUserJSON : Int -> Cmd Msg
-loadUserJSON _ =
+loadFakeUser : Int -> Cmd Msg
+loadFakeUser _ =
     Decode.decodeString userDecoder fake
         |> Task.fromResult
         |> Task.perform LoadingFailed UserLoaded
