@@ -20,7 +20,7 @@ type LoadedUser
     = NotLoaded
     | Loading Int
     | Loaded User
-    | Error Http.Error
+    | Error String
 
 
 type alias Model =
@@ -31,7 +31,7 @@ type alias Model =
 type Msg
     = LoadUser Int
     | UserLoaded User
-    | LoadingFailed Http.Error
+    | LoadingFailed String
 
 
 
@@ -76,7 +76,41 @@ loadUser i =
         url =
             "http://jsonplaceholder.typicode.com/users/" ++ (toString i)
     in
-        Task.perform LoadingFailed UserLoaded (Http.get userDecoder url)
+        Task.perform (toString >> LoadingFailed) UserLoaded (Http.get userDecoder url)
+
+
+fake : String
+fake =
+    """{
+  "id": 1,
+  "name": "Leanne Graham",
+  "username": "Bret",
+  "email": "Sincere@april.biz",
+  "address": {
+    "street": "Kulas Light",
+    "suite": "Apt. 556",
+    "city": "Gwenborough",
+    "zipcode": "92998-3874",
+    "geo": {
+      "lat": "-37.3159",
+      "lng": "81.1496"
+    }
+  },
+  "phone": "1-770-736-8031 x56442",
+  "website": "hildegard.org",
+  "company": {
+    "name": "Romaguera-Crona",
+    "catchPhrase": "Multi-layered client-server neural-net",
+    "bs": "harness real-time e-markets"
+  }
+}"""
+
+
+loadUserJSON : Int -> Cmd Msg
+loadUserJSON _ =
+    Decode.decodeString userDecoder fake
+        |> Task.fromResult
+        |> Task.perform LoadingFailed UserLoaded
 
 
 
