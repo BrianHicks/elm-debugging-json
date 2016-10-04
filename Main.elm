@@ -74,7 +74,7 @@ loadUser : Int -> Cmd Msg
 loadUser i =
     let
         url =
-            "http://jsonplaceholder.typicode.com/users/" ++ (toString i)
+            "https://jsonplaceholder.typicode.com/users/" ++ (toString i)
     in
         Task.perform (toString >> LoadingFailed) UserLoaded (Http.get userDecoder url)
 
